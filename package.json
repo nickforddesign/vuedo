@@ -6,12 +6,16 @@
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint -- ./",
-    "storybook:build": "vue-cli-service storybook:build -c config/storybook",
-    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
-    "test:unit": "vue-cli-service test:unit"
+    "test": "vue-cli-service test:unit",
+    "mocks": "nodemon src/services"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.2.2",
     "core-js": "^2.6.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jwt-simple": "^0.5.6",
     "material-design-icons-iconfont": "^5.0.1",
     "roboto-fontface": "*",
     "vee-validate": "^2.2.12",
@@ -21,10 +25,6 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^4.1.0 || ^5.0.0",
-    "@storybook/addon-knobs": "^4.1.0 || ^5.0.0",
-    "@storybook/addon-links": "^4.1.0 || ^5.0.0",
-    "@storybook/addon-notes": "^4.1.0 || ^5.0.0",
     "@thrivehive/eslint-config-node": "^1.2.3",
     "@thrivehive/eslint-config-vue": "^1.2.3",
     "@vue/cli-plugin-babel": "^3.10.0",
@@ -39,9 +39,9 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "markdown-loader": "^5.0.0",
+    "nodemon": "^1.19.1",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
-    "vue-cli-plugin-storybook": "latest",
     "vue-cli-plugin-thrivehive": "^2.0.0",
     "vue-cli-plugin-vuetify": "latest",
     "vue-template-compiler": "^2.6.10",
