@@ -23,6 +23,10 @@ app.put('/login', (req, res) => {
   userController.login(req, res);
 });
 
+app.put('/refresh', (req, res) => {
+  userController.refresh(req, res);
+});
+
 app.get('/todos', userController.refreshSession, (req, res) => {
   todoController.getAll(req, res);
 });
@@ -34,5 +38,10 @@ app.post('/todos', userController.refreshSession, (req, res) => {
 app.put('/todos/:id', userController.refreshSession, (req, res) => {
   todoController.edit(req, res);
 });
+
+app.delete('/todos/:id', userController.refreshSession, (req, res) => {
+  todoController.remove(req, res);
+});
+
 
 app.listen(PORT, () => console.log(`TODO MOCK API - Listening on port: ${PORT}`));
