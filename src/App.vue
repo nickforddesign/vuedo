@@ -3,7 +3,8 @@
     <v-app-bar app>
       <v-toolbar-title class="headline text-uppercase">
         <router-link to="/">
-          <span>TODOS</span>
+          <span>VUE</span>
+          <span class="font-weight-thin">DOS</span>
         </router-link>
       </v-toolbar-title>
       <v-spacer />

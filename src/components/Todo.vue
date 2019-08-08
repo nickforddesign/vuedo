@@ -7,7 +7,8 @@
         <v-btn
           class="mx-2"
           fab
-          medium
+          :medium="$vuetify.breakpoint.smAndUp"
+          :small="$vuetify.breakpoint.xsOnly"
           :color="data.done ? 'success' : 'lightgrey'"
           :class="editing && 'disabled'"
           @click="toggleDone"
@@ -64,7 +65,8 @@
           v-if="!editing"
           class="mx-2"
           color="warning"
-          medium
+          :medium="$vuetify.breakpoint.smAndUp"
+          :small="$vuetify.breakpoint.xsOnly"
           dark
           fab
           @click="edit"
@@ -75,7 +77,8 @@
           v-else
           class="mx-2"
           color="blue"
-          medium
+          :medium="$vuetify.breakpoint.smAndUp"
+          :small="$vuetify.breakpoint.xsOnly"
           dark
           fab
           @click="validate"
@@ -85,7 +88,8 @@
         <v-btn
           class="mx-2"
           color="error"
-          medium
+          :medium="$vuetify.breakpoint.smAndUp"
+          :small="$vuetify.breakpoint.xsOnly"
           dark
           fab
           @click="remove"
@@ -114,6 +118,7 @@ export default {
       menu: false
     };
   },
+  mounted() { console.log(this); },
   methods: {
     async validate() {
       const passed = await this.$validator.validateAll();

@@ -16,10 +16,9 @@ class UserController {
         firstName: 'Nick',
         lastName: 'Ford',
         email: 'nickforddesign@gmail.com',
-        pwHash: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicHciOiJodW50ZXIyIn0.2V0WMDmFipUVCjQzQ7U6dPLbAEYF8Ur4h293qTkJWMM' // eslint-disable-line
+        pwHash: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MCwicHciOiJodW50ZXIyIn0.--bXiLD-gz3UYSJxqzgOEoyWpdM-9Xd87AdKGYwdjNA' // eslint-disable-line
       }]
     };
-    console.log(this.hashPassword(0, 'hunter2'));
   }
 
   getUserByEmail(email) {

@@ -1,17 +1,24 @@
 <template>
   <v-layout v-if="todos" justify-center>
     <v-flex xs12 sm9>
-      <h2 class="display-1 text-center my-4">
-        Hello {{ user.firstName }}! What do you have to do?
-      </h2>
+      <div class="my-4">
+        <h2 class="display-1 mb-3 font-weight-light">
+          Hello {{ user.firstName }}! What do you have to do?
+        </h2>
+      </div>
+
       <task-form
         @create="createTodo"
       />
 
+      <div class="mt-3 mb-4">
+        <code>You currently have {{ tasksCount }}.</code>
+      </div>
+
       <div v-if="todos">
         <todo
-          v-for="(todo, index) in todos"
-          :key="index"
+          v-for="todo in todos"
+          :key="todo.id"
           :data="todo"
           class="mt-4"
           @remove="removeTodo"
@@ -33,6 +40,12 @@ export default {
   name: 'todos',
   components: { TaskForm, Todo },
   computed: {
+    tasksCount() {
+      const count = this.todos.length;
+      let message = `${count} task`;
+      if (count > 1 || !count) message += 's';
+      return message;
+    },
     ...mapGetters(['user', 'todos'])
   },
   async mounted() {
@@ -67,7 +80,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-
-</style>
