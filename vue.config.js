@@ -11,13 +11,6 @@ module.exports = {
   chainWebpack: ($config) => {
     $config.resolve.alias
       .set('%', path.resolve(__dirname, 'src/scss/modules'));
-    $config.module
-      .rule('markdown')
-      .test(/\.md$/)
-      .use('markdown-loader')
-      .loader('markdown-loader')
-      .loader('html-loader')
-      .end();
   },
   configureWebpack: {
     plugins: [
