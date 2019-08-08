@@ -1,12 +1,9 @@
 import '@/scss/styles.scss';
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
-import Logo from '@/components/icons/Logo';
 
 // register global components here
-const components = [
-  Logo
-];
+const components = [];
 
 Vue.use(VeeValidate);
 

@@ -1,25 +1,38 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import Login from './views/Login';
+import { getLocalStorage } from '@/utils';
 
 Vue.use(Router);
 
-export default new Router({
+const auth = (router, to, from, next) => {
+  if (!getLocalStorage('token')) {
+    return router.push({ name: 'login' });
+  }
+  return next();
+};
+
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'login',
+      component: Login
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/register',
+      name: 'register',
+      component: () => import('./views/Register')
+    },
+    {
+      path: '/todos',
+      name: 'todos',
+      component: () => import('./views/Todos'),
+      beforeEnter: (to, from, next) => auth(router, to, from, next)
     }
   ]
 });
+
+export default router;

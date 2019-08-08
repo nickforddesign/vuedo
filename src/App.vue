@@ -2,36 +2,45 @@
   <v-app>
     <v-app-bar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <router-link to="/">
+          <span>TODOS</span>
+        </router-link>
       </v-toolbar-title>
       <v-spacer />
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
+      <m-btn
+        v-if="user"
+        @click="logout"
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>open_in_new</v-icon>
-      </v-btn>
+        Logout
+      </m-btn>
     </v-app-bar>
 
     <v-content>
-      <hello-world />
+      <v-container>
+        <router-view />
+      </v-container>
     </v-content>
+
+    <m-modal
+      v-model="$store.state.isModalVisible"
+      :dialog="dialog"
+    />
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  computed: {
+    ...mapGetters(['user', 'dialog'])
   },
-  data: () => ({
-    //
-  })
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/');
+    }
+  }
 };
 </script>

@@ -10,6 +10,8 @@
     "mocks": "nodemon src/services"
   },
   "dependencies": {
+    "@thrivehive/magnet": "^0.1.19",
+    "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "config": "^3.2.2",
     "core-js": "^2.6.5",
@@ -17,6 +19,7 @@
     "express": "^4.17.1",
     "jwt-simple": "^0.5.6",
     "material-design-icons-iconfont": "^5.0.1",
+    "ramda": "^0.26.1",
     "roboto-fontface": "*",
     "vee-validate": "^2.2.12",
     "vue": "^2.6.10",

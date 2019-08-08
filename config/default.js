@@ -1,5 +1,5 @@
 module.exports = {
   apiMockPort: 1337,
-  apiMockSecret: '91823u98398140',
+  apiMockSecret: '5KhLJ33oUKBlqQJ8lSjesvr74EBr7hXK',
   useMocks: true
 };

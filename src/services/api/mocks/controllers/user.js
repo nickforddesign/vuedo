@@ -2,6 +2,8 @@
 
 const config = require('config');
 const jwt = require('jwt-simple');
+const { pickBy } = require('ramda');
+
 const { getCurrentMaxId } = require('../utils');
 
 const SECRET = config.get('apiMockSecret');
@@ -10,13 +12,14 @@ class UserController {
   constructor() {
     this.mockDb = {
       users: [{
-        id: 1,
+        id: 0,
         firstName: 'Nick',
         lastName: 'Ford',
         email: 'nickforddesign@gmail.com',
         pwHash: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicHciOiJodW50ZXIyIn0.2V0WMDmFipUVCjQzQ7U6dPLbAEYF8Ur4h293qTkJWMM' // eslint-disable-line
       }]
     };
+    console.log(this.hashPassword(0, 'hunter2'));
   }
 
   getUserByEmail(email) {
@@ -29,6 +32,10 @@ class UserController {
 
   hashPassword(id, password) {
     return jwt.encode({ id, pw: password }, SECRET);
+  }
+
+  sanitizeUserData(user) {
+    return pickBy((val, key) => !['pwHash', 'password'].includes(key), user);
   }
 
   register(req, res) {
@@ -48,7 +55,7 @@ class UserController {
       });
       res.status(200).send({
         message: `User ${user.email} was succesfully created.`,
-        user
+        user: this.sanitizeUserData(user)
       });
     }
   }
@@ -76,12 +83,25 @@ class UserController {
         res.status(200).send({
           message: 'Logged in successfully',
           user: {
-            ...userRecord,
-            pwHash: null,
+            ...this.sanitizeUserData(userRecord),
             token
           }
         });
       }
+    }
+  }
+
+  refresh(req, res) {
+    const token = req.header('token');
+    try {
+      const { id } = jwt.decode(token, SECRET, true);
+      const user = this.getUserById(id);
+      res.status(200).send({
+        message: 'Refreshed session',
+        user: this.sanitizeUserData(user)
+      });
+    } catch (error) {
+      res.status(401).send({ error: 'Unauthorized' });
     }
   }
 
