@@ -4,7 +4,7 @@ const config = require('config');
 const jwt = require('jwt-simple');
 const { pickBy } = require('ramda');
 
-const { getCurrentMaxId } = require('../utils');
+const { getCurrentMaxId, requireParams } = require('../utils');
 
 const SECRET = config.get('apiMockSecret');
 
@@ -37,12 +37,22 @@ class UserController {
     return pickBy((val, key) => !['pwHash', 'password'].includes(key), user);
   }
 
-  register(req, res) {
+  register(req) {
     const { user } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password
+    } = user;
+    requireParams({
+      firstName,
+      lastName,
+      email,
+      password
+    });
     if (this.getUserByEmail(user.email)) {
-      res.status(400).send({
-        message: `User with email ${user.email} already exists.`
-      });
+      throw Error(`User with email ${user.email} already exists.`);
     } else {
       const currentId = getCurrentMaxId(this.mockDb.users);
       const id = currentId + 1;
@@ -52,65 +62,72 @@ class UserController {
         id,
         pwHash
       });
-      res.status(200).send({
+      return {
         message: `User ${user.email} was succesfully created.`,
-        user: this.sanitizeUserData(user)
-      });
+        user: this.sanitizeUserData({
+          ...user,
+          id
+        })
+      };
     }
   }
 
-  login(req, res) {
+  login(req) {
     const { user } = req.body;
     const userRecord = this.getUserByEmail(user.email);
 
     if (!userRecord) {
-      res.status(400).send({
-        message: 'Invalid credentials'
-      });
+      throw Error('Invalid credentials');
     } else {
       const { id } = userRecord;
       const pwHash = this.hashPassword(id, user.password);
       if (userRecord.pwHash !== pwHash) {
-        res.status(400).send({
-          message: 'Invalid credentials'
-        });
+        throw Error('Invalid credentials');
       } else {
-        const token = jwt.encode({
-          id,
-          created: new Date()
-        }, SECRET);
-        res.status(200).send({
+        const token = this.generateRefreshToken(userRecord.id);
+        return {
           message: 'Logged in successfully',
           user: {
             ...this.sanitizeUserData(userRecord),
             token
           }
-        });
+        };
       }
     }
   }
 
-  refresh(req, res) {
+  refresh(req) {
     const token = req.header('token');
     try {
       const { id } = jwt.decode(token, SECRET, true);
       const user = this.getUserById(id);
-      res.status(200).send({
+      const newToken = this.generateRefreshToken(user.id);
+      return {
         message: 'Refreshed session',
-        user: this.sanitizeUserData(user)
-      });
+        user: this.sanitizeUserData({
+          ...user,
+          token: newToken
+        })
+      };
     } catch (error) {
-      res.status(401).send({ error: 'Unauthorized' });
+      throw Error('Unauthorized');
     }
   }
 
+  generateRefreshToken(id) {
+    return jwt.encode({
+      id,
+      created: new Date()
+    }, SECRET);
+  }
+
+  // this is technically middleware
   refreshSession(req, res, next) {
     const token = req.header('token');
     try {
       jwt.decode(token, SECRET, true);
       next();
     } catch (error) {
-      console.log(error);
       res.status(401).send({ error: 'Unauthorized' });
     }
   }
