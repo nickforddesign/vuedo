@@ -69,12 +69,19 @@ export default {
       }
     },
     async register() {
-      await register(this.$data);
-      this.$store.dispatch('show_modal', {
-        title: 'Registration successful',
-        message: 'Thank you for registering with us. Please log in to continue.'
-      });
-      this.$router.push('/');
+      try {
+        await register(this.$data);
+        this.$store.dispatch('show_modal', {
+          title: 'Registration successful',
+          message: 'Thank you for registering with us. Please log in to continue.'
+        });
+        this.$router.push('/');
+      } catch (error) {
+        this.errors.add({
+          field: 'email',
+          msg: error.response.data.message
+        });
+      }
     }
   }
 };
