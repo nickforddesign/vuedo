@@ -21,6 +21,12 @@ Run the front and back ends:
 npm start
 ```
 
+Run the unit tests:
+
+```bash
+npm test
+```
+
 ### Important Libraries used
 
 - [Vue CLI 3.x](https://cli.vuejs.org/)
@@ -28,6 +34,7 @@ npm start
 - [@thrivehive/magnet](https://github.com/thrivehive/magnet)
 - [@thrivehive/eslint-config-vue](https://github.com/thrivehive/eslint-configs)
 - [Express](https://expressjs.com/)
+- [Jest](https://jestjs.io/)
 
 ### Customize configuration
 
