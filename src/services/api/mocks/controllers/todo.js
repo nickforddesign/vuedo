@@ -7,15 +7,15 @@ class TodoController {
     };
   }
 
-  getAll(req, res) {
+  getAll(req) {
     const { user } = req.query;
     const todos = this.mockDb.todos.filter((entry) => {
       return entry.user === +user;
     });
-    res.status(200).send(todos);
+    return todos;
   }
 
-  add(req, res) {
+  add(req) {
     const { user, title, date } = req.body;
     const currentId = getCurrentMaxId(this.mockDb.todos);
     const todo = {
@@ -26,13 +26,13 @@ class TodoController {
       done: false
     };
     this.mockDb.todos.push(todo);
-    res.status(200).send({
+    return {
       message: 'Todo successfully added',
       todo
-    });
+    };
   }
 
-  edit(req, res) {
+  edit(req) {
     const data = req.body;
     const { id } = req.params;
     const todos = this.mockDb.todos.filter((entry) => {
@@ -44,22 +44,22 @@ class TodoController {
       ...data
     };
     this.mockDb.todos.splice(index, 1, todo);
-    res.status(200).send({
+    return {
       message: 'Todo updated successfully',
       todo
-    });
+    };
   }
 
-  remove(req, res) {
+  remove(req) {
     const { id } = req.params;
     const todoRecord = this.mockDb.todos.find((entry) => {
       return entry.id === +id;
     });
     const index = this.mockDb.todos.indexOf(todoRecord);
     this.mockDb.todos.splice(index, 1);
-    res.status(200).send({
+    return {
       message: 'Todo removed successfully'
-    });
+    };
   }
 }
 
