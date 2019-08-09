@@ -53,7 +53,8 @@ export default {
       await this.refreshSession();
       await this.fetchTodos();
     } catch (error) {
-      this.logout();
+      this.$store.dispatch('logout');
+      this.$router.push('/');
     }
   },
   methods: {
