@@ -16,31 +16,73 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/register', (req, res) => {
-  userController.register(req, res);
+  try {
+    res.send(userController.register(req));
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    });
+  }
 });
 
 app.put('/login', (req, res) => {
-  userController.login(req, res);
+  try {
+    res.send(userController.login(req));
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    });
+  }
 });
 
 app.put('/refresh', (req, res) => {
-  userController.refresh(req, res);
+  try {
+    res.send(userController.refresh(req));
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    });
+  }
 });
 
 app.get('/todos', userController.refreshSession, (req, res) => {
-  todoController.getAll(req, res);
+  try {
+    res.send(todoController.getAll(req));
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    });
+  }
 });
 
 app.post('/todos', userController.refreshSession, (req, res) => {
-  todoController.add(req, res);
+  try {
+    res.send(todoController.add(req));
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    });
+  }
 });
 
 app.put('/todos/:id', userController.refreshSession, (req, res) => {
-  todoController.edit(req, res);
+  try {
+    res.send(todoController.edit(req));
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    });
+  }
 });
 
 app.delete('/todos/:id', userController.refreshSession, (req, res) => {
-  todoController.remove(req, res);
+  try {
+    res.send(todoController.remove(req));
+  } catch (error) {
+    res.status(400).send({
+      message: error.message
+    });
+  }
 });
 
 
